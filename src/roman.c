@@ -28,6 +28,8 @@ const char* roman_add(const char* num1, const char* num2)
     //if too many I's, we need to simplify output
     if (newlen == 4)
         strcpy(retval,"IV");
+    else if (newlen == 5)
+        strcpy(retval, "V");
     
     return retval;
 }
