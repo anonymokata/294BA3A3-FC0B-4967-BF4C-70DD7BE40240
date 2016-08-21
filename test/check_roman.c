@@ -16,6 +16,22 @@ START_TEST(add_I_plus_I)
 }
 END_TEST
 
+START_TEST(add_I_up_to_III)
+{
+    const char* result;
+    
+    result = roman_add("I","II");
+    ck_assert_ptr_ne(0, result);
+    ck_assert_str_eq("III", result);
+    free((void*)result);
+    
+    result = roman_add("II","I");
+    ck_assert_ptr_ne(0, result);
+    ck_assert_str_eq("III", result);
+    free((void*)result);
+}
+END_TEST
+
 /* CASE: handle errors */
 START_TEST(null_inputs_should_return_null)
 {
@@ -56,6 +72,7 @@ Suite* roman_suite(void)
     
     c = tcase_create("simple_addition");
     tcase_add_test(c, add_I_plus_I);
+    tcase_add_test(c, add_I_up_to_III);
     suite_add_tcase(s, c);
     
     c = tcase_create("handle_errors");
