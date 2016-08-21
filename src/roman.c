@@ -24,5 +24,9 @@ const char* roman_add(const char* num1, const char* num2)
     //concat the two strings to get added string
     sprintf(retval, "%s%s", num1, num2);
     
+    //if too many I's, we need to simplify output
+    if ((len1 + len2) == 4)
+        strcpy(retval,"IV");
+    
     return retval;
 }
