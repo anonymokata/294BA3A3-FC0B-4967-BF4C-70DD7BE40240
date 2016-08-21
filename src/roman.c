@@ -39,6 +39,12 @@ const char* roman_add(const char* num1, const char* num2)
     if (!args_valid(num1, num2))
         return 0;
     
+    //expand if needed
+    if (strcmp(num1, "IV") == 0)
+        num1 = "IIII";
+    if (strcmp(num2, "IV") == 0)
+        num2 = "IIII";
+    
     //grab lengths and allocate enough memory for us to build the final string
     len1 = strlen(num1);
     len2 = strlen(num2);
