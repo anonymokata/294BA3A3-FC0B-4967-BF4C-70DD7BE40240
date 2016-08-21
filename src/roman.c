@@ -20,6 +20,8 @@ static const char* expander(const char* num)
 {
     if (strcmp(num, "IV") == 0)
         num = "IIII";
+    else if (strcmp(num, "V") == 0)
+        num = "IIIII";
     return num;
 }
 
