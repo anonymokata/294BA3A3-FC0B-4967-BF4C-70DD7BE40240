@@ -1,4 +1,6 @@
 #include <stdint.h>
+#include <string.h>
+#include <stdlib.h>
 #include <check.h>
 #include "roman.h"
 
@@ -9,6 +11,8 @@ START_TEST(add_I_plus_I)
     
     ck_assert_ptr_ne(0, result);
     ck_assert_str_eq("II", result);
+    
+    free((void*)result);
 }
 END_TEST
 

@@ -1,5 +1,7 @@
 #include "roman.h"
 #include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 const char* roman_add(const char* num1, const char* num2)
 {
