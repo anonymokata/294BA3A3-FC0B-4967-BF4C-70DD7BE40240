@@ -3,9 +3,12 @@
 #include "roman.h"
 
 /* CASE: simple-addition */
-START_TEST(first_test)
+START_TEST(add_I_plus_I)
 {
+    const char* result = roman_add("I","I");
     
+    ck_assert_ptr_ne(0, result);
+    ck_assert_str_eq("II", result);
 }
 END_TEST
 
@@ -17,7 +20,7 @@ Suite* roman_suite(void)
     s = suite_create("roman");
     
     c = tcase_create("simple_addition");
-    tcase_add_test(c, first_test);
+    tcase_add_test(c, add_I_plus_I);
     suite_add_tcase(s, c);
     
     return s;
