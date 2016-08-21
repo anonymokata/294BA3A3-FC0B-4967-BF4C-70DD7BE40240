@@ -16,6 +16,13 @@ static int args_valid(const char* num1, const char* num2)
     return 1;
 }
 
+static const char* expander(const char* num)
+{
+    if (strcmp(num, "IV") == 0)
+        num = "IIII";
+    return num;
+}
+
 static char* compactor(char* retval)
 {
     size_t len = strlen(retval);
@@ -40,10 +47,8 @@ const char* roman_add(const char* num1, const char* num2)
         return 0;
     
     //expand if needed
-    if (strcmp(num1, "IV") == 0)
-        num1 = "IIII";
-    if (strcmp(num2, "IV") == 0)
-        num2 = "IIII";
+    num1 = expander(num1);
+    num2 = expander(num2);
     
     //grab lengths and allocate enough memory for us to build the final string
     len1 = strlen(num1);
