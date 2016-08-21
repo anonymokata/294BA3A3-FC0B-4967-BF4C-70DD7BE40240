@@ -3,6 +3,21 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+static char* compactor(char* retval)
+{
+    size_t len = strlen(retval);
+    
+    //if too many I's, we need to simplify output
+    if (len == 4)
+        strcpy(retval,"IV");
+    else if (len == 5)
+        strcpy(retval, "V");
+    else if (len == 6)
+        strcpy(retval, "VI");
+    
+    return retval;
+}
+
 const char* roman_add(const char* num1, const char* num2)
 {
     char* retval;
@@ -25,13 +40,6 @@ const char* roman_add(const char* num1, const char* num2)
     //concat the two strings to get added string
     sprintf(retval, "%s%s", num1, num2);
     
-    //if too many I's, we need to simplify output
-    if (newlen == 4)
-        strcpy(retval,"IV");
-    else if (newlen == 5)
-        strcpy(retval, "V");
-    else if (newlen == 6)
-        strcpy(retval, "VI");
     
-    return retval;
+    return compactor(retval);
 }
