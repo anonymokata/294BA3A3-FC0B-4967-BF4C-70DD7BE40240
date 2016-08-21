@@ -16,6 +16,22 @@ START_TEST(add_I_plus_I)
 }
 END_TEST
 
+/* CASE: handle errors */
+START_TEST(null_inputs_should_return_null)
+{
+    const char* result;
+    
+    result = roman_add(0,"I");
+    ck_assert_ptr_eq(0, result);
+    
+    result = roman_add("I", 0);
+    ck_assert_ptr_eq(0, result);
+    
+    result = roman_add(0,0);
+    ck_assert_ptr_eq(0, result);
+}
+END_TEST
+
 /* Set up the tests, cases, and suite to be run for this unit */
 Suite* roman_suite(void)
 {
@@ -25,6 +41,10 @@ Suite* roman_suite(void)
     
     c = tcase_create("simple_addition");
     tcase_add_test(c, add_I_plus_I);
+    suite_add_tcase(s, c);
+    
+    c = tcase_create("handle_errors");
+    tcase_add_test(c, null_inputs_should_return_null);
     suite_add_tcase(s, c);
     
     return s;
