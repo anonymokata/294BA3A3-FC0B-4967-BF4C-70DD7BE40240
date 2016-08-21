@@ -32,6 +32,21 @@ START_TEST(null_inputs_should_return_null)
 }
 END_TEST
 
+START_TEST(empty_inputs_should_return_null)
+{
+    const char* result;
+    
+    result = roman_add("", "I");
+    ck_assert_ptr_eq(0, result);
+    
+    result = roman_add("I", "");
+    ck_assert_ptr_eq(0, result);
+    
+    result = roman_add("", "");
+    ck_assert_ptr_eq(0, result);
+}
+END_TEST
+
 /* Set up the tests, cases, and suite to be run for this unit */
 Suite* roman_suite(void)
 {
@@ -45,6 +60,7 @@ Suite* roman_suite(void)
     
     c = tcase_create("handle_errors");
     tcase_add_test(c, null_inputs_should_return_null);
+    tcase_add_test(c, empty_inputs_should_return_null);
     suite_add_tcase(s, c);
     
     return s;
