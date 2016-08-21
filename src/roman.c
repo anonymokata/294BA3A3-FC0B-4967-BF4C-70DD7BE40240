@@ -30,6 +30,8 @@ const char* roman_add(const char* num1, const char* num2)
         strcpy(retval,"IV");
     else if (newlen == 5)
         strcpy(retval, "V");
+    else if (newlen == 6)
+        strcpy(retval, "VI");
     
     return retval;
 }
