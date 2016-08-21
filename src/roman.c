@@ -3,6 +3,19 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+static int args_valid(const char* num1, const char* num2)
+{
+    //check for null inputs
+    if ((num1 == 0) || (num2 == 0))
+        return 0;
+    
+    //check for empty inputs
+    if ((num1[0] == 0) || (num2[0] == 0))
+        return 0;
+    
+    return 1;
+}
+
 static char* compactor(char* retval)
 {
     size_t len = strlen(retval);
@@ -23,12 +36,7 @@ const char* roman_add(const char* num1, const char* num2)
     char* retval;
     size_t len1, len2, newlen;
     
-    //check for null inputs
-    if ((num1 == 0) || (num2 == 0))
-        return 0;
-    
-    //check for empty inputs
-    if ((num1[0] == 0) || (num2[0] == 0))
+    if (!args_valid(num1, num2))
         return 0;
     
     //grab lengths and allocate enough memory for us to build the final string
