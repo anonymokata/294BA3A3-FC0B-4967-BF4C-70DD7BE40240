@@ -48,6 +48,5 @@ const char* roman_add(const char* num1, const char* num2)
     //concat the two strings to get added string
     sprintf(retval, "%s%s", num1, num2);
     
-    
     return compactor(retval);
 }
