@@ -111,6 +111,7 @@ static char* compactor(char* retval)
     {
         { "IIIII", "V" },
         { "VV",    "X" },
+        { "XXXXX", "L" },
     };
     
     const SIMPLIFICATION_T simplifications_nicety[] =
