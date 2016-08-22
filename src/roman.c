@@ -25,13 +25,36 @@ static const char* expander(const char* num)
     return num;
 }
 
+static char* merge(const char* num1, const char* num2)
+{
+    size_t len1, len2;
+    char* retval;
+    char* ptr;
+    
+    len1 = strlen(num1);
+    len2 = strlen(num2);
+    retval = malloc(len1 + len2 + 1);
+    ptr = retval;
+    
+    while(*num1 == 'V')
+        *ptr++ = *num1++;
+    while(*num2 == 'V')
+        *ptr++ = *num2++;
+    while(*num1 == 'I')
+        *ptr++ = *num1++;
+    while(*num2 == 'I')
+        *ptr++ = *num2++;
+    *ptr = 0;
+    
+    return retval;
+}
+
 static char* compactor(char* retval)
 {
-    size_t len = strlen(retval);
     char* ptr1 = retval;
     char* ptr2 = retval;
-    int i;
     int count = 0;
+    int i;
     
     while (*ptr1 != 0)
     {
@@ -65,7 +88,6 @@ static char* compactor(char* retval)
 const char* roman_add(const char* num1, const char* num2)
 {
     char* retval;
-    size_t len1, len2, newlen;
     
     if (!args_valid(num1, num2))
         return 0;
@@ -74,14 +96,8 @@ const char* roman_add(const char* num1, const char* num2)
     num1 = expander(num1);
     num2 = expander(num2);
     
-    //grab lengths and allocate enough memory for us to build the final string
-    len1 = strlen(num1);
-    len2 = strlen(num2);
-    newlen = len1 + len2;
-    retval = malloc(newlen + 1);
-    
-    //concat the two strings to get added string
-    sprintf(retval, "%s%s", num1, num2);
+    //merge numbers to add
+    retval = merge(num1, num2);
     
     return compactor(retval);
 }
