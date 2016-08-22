@@ -3,6 +3,24 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+typedef struct _SIMPLIFICATION_T 
+{
+    const char* wide;
+    const char* narrow;
+} SIMPLIFICATION_T;
+
+static int match_len(const char* find, const char* num)
+{
+    int len = 0;
+    while (*find != 0)
+    {
+        if (*find++ != *num++)
+            return 0;
+        len++;
+    }
+    return len;
+}
+
 static int args_valid(const char* num1, const char* num2)
 {
     //check for null inputs
@@ -51,42 +69,43 @@ static char* merge(const char* num1, const char* num2)
 
 static char* compactor_add(char* retval)
 {
+    const SIMPLIFICATION_T simplifications[] =
+    {
+        { "IIIII", "V" },
+        { "VV",    "X" },
+    };
+    
     char* ptr1 = retval;
     char* ptr2 = retval;
-    int changed = 0;
-    int count = 0;
+    char* last = 0;
     int i;
     
     while (*ptr1 != 0)
     {
-        if (*ptr1 == 'I')
+        for (i=0; (i < (int)DIMENSION_OF(simplifications) && (last != ptr1)); i++)
         {
-            count++;
-            if (count == 5)
+            int len = match_len(simplifications[i].wide, ptr1);
+            if (len > 0)
             {
-                count = 0;
-                *ptr2++ = 'V';
-                changed = 1;
+                const char* narrow = simplifications[i].narrow;
+                while (*narrow)
+                {
+                    *ptr2++ = *narrow++;
+                }
+                ptr1 += (len - 1);
+                last = ptr1;
+                break;
             }
         }
-        else if ((ptr1[0] == 'V') && (ptr1[1] == 'V'))
-        {
-            *ptr2++ = 'X';
-            ptr1++;
-            changed = 1;
-        }
-        else
+        if (last != ptr1)
         {
             *ptr2++ = *ptr1;
-            count = 0;
         }
         ptr1++;
     }
-    for (i=0; i < count; i++)
-        *ptr2++ = 'I';
-    *ptr2++ = 0;
+    *ptr2 = 0;
     
-    if (changed)
+    if (last != 0)
         retval = compactor_add(retval);
     
     return retval;
