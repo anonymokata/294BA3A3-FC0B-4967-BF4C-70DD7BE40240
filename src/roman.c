@@ -34,6 +34,10 @@ static char* merge(const char* num1, const char* num2)
     retval = malloc(len1 + len2 + 1);
     ptr = retval;
     
+    while(*num1 == 'X')
+        *ptr++ = *num1++;
+    while(*num2 == 'X')
+        *ptr++ = *num2++;
     while(*num1 == 'V')
         *ptr++ = *num1++;
     while(*num2 == 'V')
