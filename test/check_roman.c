@@ -261,7 +261,7 @@ Suite* roman_suite(void)
     TCase* c;
     s = suite_create("roman");
     
-    c = tcase_create("simple_addition");
+    c = tcase_create("addition");
     tcase_add_test(c, add_I_plus_I);
     tcase_add_test(c, add_I_up_to_III);
     tcase_add_test(c, IIII_output_looks_like_IV);
@@ -276,7 +276,7 @@ Suite* roman_suite(void)
     tcase_add_test(c, add_to_L);
     suite_add_tcase(s, c);
     
-    c = tcase_create("handle_errors");
+    c = tcase_create("errors");
     tcase_add_test(c, null_inputs_should_return_null);
     tcase_add_test(c, empty_inputs_should_return_null);
     suite_add_tcase(s, c);
