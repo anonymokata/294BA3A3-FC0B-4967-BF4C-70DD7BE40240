@@ -105,57 +105,22 @@ static char* simplify(char* retval, const SIMPLIFICATION_T* simplifications, con
     return retval;
 }
 
-static char* compactor_add(char* retval)
+static char* compactor(char* retval)
 {
-    const SIMPLIFICATION_T simplifications[] =
+    const SIMPLIFICATION_T simplifications_adders[] =
     {
         { "IIIII", "V" },
         { "VV",    "X" },
     };
     
-    return simplify(retval, simplifications, (int)DIMENSION_OF(simplifications));
-}
-
-static char* compactor_nice(char* retval)
-{
-    char* ptr1 = retval;
-    char* ptr2 = retval;
-    int count = 0;
-    int i;
-    
-    while (*ptr1 != 0)
+    const SIMPLIFICATION_T simplifications_nicety[] =
     {
-        if (*ptr1 == 'I')
-        {
-            count++;
-            if (count == 4)
-            {
-                count = 0;
-                if ((ptr2 != retval) && (*(ptr2 - 1) == 'V'))
-                { 
-                    ptr2 -= 1;
-                    *ptr2++ = 'I';
-                    *ptr2++ = 'X';
-                }
-                else
-                {
-                    *ptr2++ = 'I';
-                    *ptr2++ = 'V';
-                }
-            }
-        }
-        else
-        {
-            *ptr2++ = *ptr1;
-            count = 0;
-        }
-        ptr1++;
-    }
+        { "IIII", "IV" },
+        { "VIV",  "IX" },
+    };
     
-    for (i=0; i < count; i++)
-        *ptr2++ = 'I';
-    *ptr2++ = 0;
-    
+    retval = simplify(retval, simplifications_adders, (int)DIMENSION_OF(simplifications_adders));
+    retval = simplify(retval, simplifications_nicety, (int)DIMENSION_OF(simplifications_nicety));
     return retval;
 }
 
@@ -172,8 +137,7 @@ const char* roman_add(const char* num1, const char* num2)
     
     //merge numbers to add
     retval = merge(num1, num2);
-    retval = compactor_add(retval);
-    retval = compactor_nice(retval);
+    retval = compactor(retval);
     
     return retval;
 }
