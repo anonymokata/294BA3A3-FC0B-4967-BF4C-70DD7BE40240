@@ -170,7 +170,7 @@ START_TEST(allow_X_as_an_input)
     
     result = roman_add("XI","XVI");
     ck_assert_ptr_ne(0, result);
-    ck_assert_str_eq("XXVI", result);
+    ck_assert_str_eq("XXVII", result);
     free((void*)result);
     
     result = roman_add("XI","VIII");
