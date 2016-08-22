@@ -38,6 +38,8 @@ static const char* expander(const char* num)
 {
     if (strcmp(num, "IV") == 0)
         num = "IIII";
+    if (strcmp(num, "IX") == 0)
+        num = "VIIII";
     if (strcmp(num, "XL") == 0)
         num = "XXXX";
     if (strcmp(num, "LXL") == 0)
