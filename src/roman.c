@@ -38,6 +38,10 @@ static const char* expander(const char* num)
 {
     if (strcmp(num, "IV") == 0)
         num = "IIII";
+    if (strcmp(num, "XL") == 0)
+        num = "XXXX";
+    if (strcmp(num, "LXL") == 0)
+        num = "LXXXX";
     return num;
 }
 
@@ -112,6 +116,7 @@ static char* compactor(char* retval)
         { "IIIII", "V" },
         { "VV",    "X" },
         { "XXXXX", "L" },
+        { "LL",    "C" },
     };
     
     const SIMPLIFICATION_T simplifications_nicety[] =
