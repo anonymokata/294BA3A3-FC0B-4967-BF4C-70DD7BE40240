@@ -28,15 +28,37 @@ static const char* expander(const char* num)
 static char* compactor(char* retval)
 {
     size_t len = strlen(retval);
+    char* ptr1 = retval;
+    char* ptr2 = retval;
+    int i;
+    int count = 0;
     
-    //if too many I's, we need to simplify output
-    if (len == 4)
-        strcpy(retval,"IV");
-    else if (len == 5)
-        strcpy(retval, "V");
-    else if (len == 6)
-        strcpy(retval, "VI");
-    
+    while (*ptr1 != 0)
+    {
+        if (*ptr1 == 'I')
+        {
+            count++;
+            if (count == 5)
+            {
+                count = 0;
+                *ptr2++ = 'V';
+            }
+        }
+        else
+            count = 0;
+        ptr1++;
+    }
+    if (count == 4)
+    {
+        *ptr2++ = 'I';
+        *ptr2++ = 'V';
+    }
+    else
+    {
+        for (i=0; i < count; i++)
+            *ptr2++ = 'I';
+    }
+    *ptr2++ = 0;
     return retval;
 }
 
