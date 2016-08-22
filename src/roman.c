@@ -20,8 +20,6 @@ static const char* expander(const char* num)
 {
     if (strcmp(num, "IV") == 0)
         num = "IIII";
-    else if (strcmp(num, "V") == 0)
-        num = "IIIII";
     return num;
 }
 
@@ -68,7 +66,10 @@ static char* compactor(char* retval)
             }
         }
         else
+        {
+            *ptr2++ = *ptr1;
             count = 0;
+        }
         ptr1++;
     }
     if (count == 4)
