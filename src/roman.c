@@ -74,8 +74,17 @@ static char* compactor(char* retval)
     }
     if (count == 4)
     {
-        *ptr2++ = 'I';
-        *ptr2++ = 'V';
+        if ((ptr2 != retval) && (*(ptr2 - 1) == 'V'))
+        { 
+            ptr2 -= 1;
+            *ptr2++ = 'I';
+            *ptr2++ = 'X';
+        }
+        else
+        {
+            *ptr2++ = 'I';
+            *ptr2++ = 'V';
+        }
     }
     else
     {
