@@ -118,6 +118,7 @@ static char* compactor(char* retval)
     {
         { "IIII", "IV" },
         { "VIV",  "IX" },
+        { "XXXX", "XL" },
     };
     
     retval = simplify(retval, simplifications_adders, (int)DIMENSION_OF(simplifications_adders));
