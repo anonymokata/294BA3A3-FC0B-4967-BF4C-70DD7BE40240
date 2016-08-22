@@ -215,7 +215,7 @@ START_TEST(add_to_L)
     ck_assert_str_eq("L", result);
     free((void*)result);
     
-    result = roman_add("X","XXXXX");
+    result = roman_add("X","XXXX");
     ck_assert_ptr_ne(0, result);
     ck_assert_str_eq("L", result);
     free((void*)result);
