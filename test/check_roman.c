@@ -131,7 +131,7 @@ START_TEST(add_through_VIII)
     ck_assert_str_eq("VIII", result);
     free((void*)result);
     
-    result = roman_add("IV","VV");
+    result = roman_add("IV","IV");
     ck_assert_ptr_ne(0, result);
     ck_assert_str_eq("VIII", result);
     free((void*)result);
