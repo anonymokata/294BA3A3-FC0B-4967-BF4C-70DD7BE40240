@@ -243,6 +243,27 @@ START_TEST(add_to_XL)
 }
 END_TEST
 
+START_TEST(allow_L_as_input)
+{
+    const char* result;
+    
+    result = roman_add("L","X");
+    ck_assert_ptr_ne(0, result);
+    ck_assert_str_eq("LX", result);
+    free((void*)result);
+    
+    result = roman_add("VII","L");
+    ck_assert_ptr_ne(0, result);
+    ck_assert_str_eq("LVII", result);
+    free((void*)result);
+    
+    result = roman_add("LII","III");
+    ck_assert_ptr_ne(0, result);
+    ck_assert_str_eq("LV", result);
+    free((void*)result);
+}
+END_TEST
+
 
 /* CASE: handle errors */
 START_TEST(null_inputs_should_return_null)
