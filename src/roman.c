@@ -9,6 +9,23 @@ typedef struct _SIMPLIFICATION_T
     const char* narrow;
 } SIMPLIFICATION_T;
 
+static const char letters[] = { 'L', 'X', 'V', 'I' };
+
+static const SIMPLIFICATION_T simplifications_adders[] =
+{
+    { "IIIII", "V" },
+    { "VV",    "X" },
+    { "XXXXX", "L" },
+    { "LL",    "C" },
+};
+
+static const SIMPLIFICATION_T simplifications_nicety[] =
+{
+    { "IIII", "IV" },
+    { "VIV",  "IX" },
+    { "XXXX", "XL" },
+};
+
 static int match_len(const char* find, const char* num)
 {
     int len = 0;
@@ -49,7 +66,6 @@ static const char* expander(const char* num)
 
 static char* merge(const char* num1, const char* num2)
 {
-    const char ordered[] = { 'L', 'X', 'V', 'I' };
     size_t len1, len2;
     size_t i;
     char* retval;
@@ -60,9 +76,9 @@ static char* merge(const char* num1, const char* num2)
     retval = malloc(len1 + len2 + 1);
     ptr = retval;
     
-    for (i=0; i < DIMENSION_OF(ordered); i++)
+    for (i=0; i < DIMENSION_OF(letters); i++)
     {
-        char letter = ordered[i];
+        char letter = letters[i];
         while (*num1 == letter)
             *ptr++ = *num1++;
         while (*num2 == letter)
@@ -113,21 +129,6 @@ static char* simplify(char* retval, const SIMPLIFICATION_T* simplifications, con
 
 static char* compactor(char* retval)
 {
-    const SIMPLIFICATION_T simplifications_adders[] =
-    {
-        { "IIIII", "V" },
-        { "VV",    "X" },
-        { "XXXXX", "L" },
-        { "LL",    "C" },
-    };
-    
-    const SIMPLIFICATION_T simplifications_nicety[] =
-    {
-        { "IIII", "IV" },
-        { "VIV",  "IX" },
-        { "XXXX", "XL" },
-    };
-    
     retval = simplify(retval, simplifications_adders, (int)DIMENSION_OF(simplifications_adders));
     retval = simplify(retval, simplifications_nicety, (int)DIMENSION_OF(simplifications_nicety));
     return retval;
