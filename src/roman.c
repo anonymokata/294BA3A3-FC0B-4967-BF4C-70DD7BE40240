@@ -25,7 +25,9 @@ static const char* expander(const char* num)
 
 static char* merge(const char* num1, const char* num2)
 {
+    const char ordered[] = { 'X', 'V', 'I' };
     size_t len1, len2;
+    size_t i;
     char* retval;
     char* ptr;
     
@@ -34,18 +36,14 @@ static char* merge(const char* num1, const char* num2)
     retval = malloc(len1 + len2 + 1);
     ptr = retval;
     
-    while(*num1 == 'X')
-        *ptr++ = *num1++;
-    while(*num2 == 'X')
-        *ptr++ = *num2++;
-    while(*num1 == 'V')
-        *ptr++ = *num1++;
-    while(*num2 == 'V')
-        *ptr++ = *num2++;
-    while(*num1 == 'I')
-        *ptr++ = *num1++;
-    while(*num2 == 'I')
-        *ptr++ = *num2++;
+    for (i=0; i < DIMENSION_OF(ordered); i++)
+    {
+        char letter = ordered[i];
+        while (*num1 == letter)
+            *ptr++ = *num1++;
+        while (*num2 == letter)
+            *ptr++ = *num2++;
+    }
     *ptr = 0;
     
     return retval;
