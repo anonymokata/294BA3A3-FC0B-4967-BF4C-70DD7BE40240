@@ -47,7 +47,7 @@ static char* merge(const char* num1, const char* num2)
     return retval;
 }
 
-static char* compactor(char* retval)
+static char* compactor_add(char* retval)
 {
     char* ptr1 = retval;
     char* ptr2 = retval;
@@ -85,25 +85,51 @@ static char* compactor(char* retval)
         }
         ptr1++;
     }
-    if (count == 4)
+    for (i=0; i < count; i++)
+        *ptr2++ = 'I';
+    *ptr2++ = 0;
+    
+    return retval;
+}
+
+static char* compactor_nice(char* retval)
+{
+    char* ptr1 = retval;
+    char* ptr2 = retval;
+    int count = 0;
+    int i;
+    
+    while (*ptr1 != 0)
     {
-        if ((ptr2 != retval) && (*(ptr2 - 1) == 'V'))
-        { 
-            ptr2 -= 1;
-            *ptr2++ = 'I';
-            *ptr2++ = 'X';
+        if (*ptr1 == 'I')
+        {
+            count++;
+            if (count == 4)
+            {
+                count = 0;
+                if ((ptr2 != retval) && (*(ptr2 - 1) == 'V'))
+                { 
+                    ptr2 -= 1;
+                    *ptr2++ = 'I';
+                    *ptr2++ = 'X';
+                }
+                else
+                {
+                    *ptr2++ = 'I';
+                    *ptr2++ = 'V';
+                }
+            }
         }
         else
         {
-            *ptr2++ = 'I';
-            *ptr2++ = 'V';
+            *ptr2++ = *ptr1;
+            count = 0;
         }
+        ptr1++;
     }
-    else
-    {
-        for (i=0; i < count; i++)
-            *ptr2++ = 'I';
-    }
+    
+    for (i=0; i < count; i++)
+        *ptr2++ = 'I';
     *ptr2++ = 0;
     
     return retval;
@@ -122,6 +148,8 @@ const char* roman_add(const char* num1, const char* num2)
     
     //merge numbers to add
     retval = merge(num1, num2);
+    retval = compactor_add(retval);
+    retval = compactor_nice(retval);
     
-    return compactor(retval);
+    return retval;
 }
