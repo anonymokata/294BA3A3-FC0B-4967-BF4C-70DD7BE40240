@@ -180,6 +180,22 @@ START_TEST(allow_X_as_an_input)
 }
 END_TEST
 
+START_TEST(allow_IX_as_an_input)
+{
+    const char* result;
+    
+    result = roman_add("IX","I");
+    ck_assert_ptr_ne(0, result);
+    ck_assert_str_eq("X", result);
+    free((void*)result);
+    
+    result = roman_add("IX","IX");
+    ck_assert_ptr_ne(0, result);
+    ck_assert_str_eq("XVIII", result);
+    free((void*)result);
+}
+END_TEST
+
 START_TEST(add_to_X)
 {
     const char* result;
@@ -334,6 +350,7 @@ Suite* roman_suite(void)
     tcase_add_test(c, V_input_means_IIIII);
     tcase_add_test(c, add_through_VIII);
     tcase_add_test(c, VIIII_output_looks_like_IX);
+    tcase_add_test(c, allow_IX_as_an_input);
     tcase_add_test(c, add_to_X);
     tcase_add_test(c, allow_X_as_an_input);
     tcase_add_test(c, add_to_L);
