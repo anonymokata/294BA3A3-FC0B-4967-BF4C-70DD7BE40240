@@ -159,6 +159,27 @@ START_TEST(VIIII_output_looks_like_IX)
 }
 END_TEST
 
+START_TEST(add_to_X)
+{
+    const char* result;
+    
+    result = roman_add("V","V");
+    ck_assert_ptr_ne(0, result);
+    ck_assert_str_eq("X", result);
+    free((void*)result);
+    
+    result = roman_add("I","VIIII");
+    ck_assert_ptr_ne(0, result);
+    ck_assert_str_eq("X", result);
+    free((void*)result);
+    
+    result = roman_add("VI","IV");
+    ck_assert_ptr_ne(0, result);
+    ck_assert_str_eq("X", result);
+    free((void*)result);
+}
+END_TEST
+
 
 /* CASE: handle errors */
 START_TEST(null_inputs_should_return_null)
@@ -208,6 +229,7 @@ Suite* roman_suite(void)
     tcase_add_test(c, V_input_means_IIIII);
     tcase_add_test(c, add_through_VIII);
     tcase_add_test(c, VIIII_output_looks_like_IX);
+    tcase_add_test(c, add_to_X);
     suite_add_tcase(s, c);
     
     c = tcase_create("handle_errors");
