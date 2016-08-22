@@ -51,6 +51,7 @@ static char* compactor_add(char* retval)
 {
     char* ptr1 = retval;
     char* ptr2 = retval;
+    int changed = 0;
     int count = 0;
     int i;
     
@@ -62,21 +63,15 @@ static char* compactor_add(char* retval)
             if (count == 5)
             {
                 count = 0;
-                if ( *(ptr2 - 1) == 'V' )
-                {
-                    ptr2--;
-                    *ptr2++ = 'X';
-                }
-                else
-                {
-                    *ptr2++ = 'V';
-                }
+                *ptr2++ = 'V';
+                changed = 1;
             }
         }
         else if ((ptr1[0] == 'V') && (ptr1[1] == 'V'))
         {
             *ptr2++ = 'X';
             ptr1++;
+            changed = 1;
         }
         else
         {
@@ -88,6 +83,9 @@ static char* compactor_add(char* retval)
     for (i=0; i < count; i++)
         *ptr2++ = 'I';
     *ptr2++ = 0;
+    
+    if (changed)
+        retval = compactor_add(retval);
     
     return retval;
 }
