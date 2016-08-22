@@ -301,6 +301,27 @@ START_TEST(add_to_C)
 }
 END_TEST
 
+START_TEST(add_compacted_numbers)
+{
+    const char* result;
+    
+    result = roman_add("LIX","XL");
+    ck_assert_ptr_ne(0, result);
+    ck_assert_str_eq("XCIX", result);
+    free((void*)result);
+    
+    result = roman_add("XC","X");
+    ck_assert_ptr_ne(0, result);
+    ck_assert_str_eq("C", result);
+    free((void*)result);
+    
+    result = roman_add("XIV","LIX");
+    ck_assert_ptr_ne(0, result);
+    ck_assert_str_eq("LXXIII", result);
+    free((void*)result);
+}
+END_TEST
+
 
 /* CASE: handle errors */
 START_TEST(null_inputs_should_return_null)
@@ -357,6 +378,7 @@ Suite* roman_suite(void)
     tcase_add_test(c, add_to_XL);
     tcase_add_test(c, allow_L_as_input);
     tcase_add_test(c, add_to_C);
+    tcase_add_test(c, add_compacted_numbers);
     suite_add_tcase(s, c);
     
     c = tcase_create("errors");
