@@ -67,14 +67,8 @@ static char* merge(const char* num1, const char* num2)
     return retval;
 }
 
-static char* compactor_add(char* retval)
+static char* simplify(char* retval, const SIMPLIFICATION_T* simplifications, const int num_simplifications)
 {
-    const SIMPLIFICATION_T simplifications[] =
-    {
-        { "IIIII", "V" },
-        { "VV",    "X" },
-    };
-    
     char* ptr1 = retval;
     char* ptr2 = retval;
     char* last = 0;
@@ -82,7 +76,7 @@ static char* compactor_add(char* retval)
     
     while (*ptr1 != 0)
     {
-        for (i=0; (i < (int)DIMENSION_OF(simplifications) && (last != ptr1)); i++)
+        for (i=0; (i < num_simplifications && (last != ptr1)); i++)
         {
             int len = match_len(simplifications[i].wide, ptr1);
             if (len > 0)
@@ -106,9 +100,20 @@ static char* compactor_add(char* retval)
     *ptr2 = 0;
     
     if (last != 0)
-        retval = compactor_add(retval);
+        retval = simplify(retval, simplifications, num_simplifications);
     
     return retval;
+}
+
+static char* compactor_add(char* retval)
+{
+    const SIMPLIFICATION_T simplifications[] =
+    {
+        { "IIIII", "V" },
+        { "VV",    "X" },
+    };
+    
+    return simplify(retval, simplifications, (int)DIMENSION_OF(simplifications));
 }
 
 static char* compactor_nice(char* retval)
