@@ -317,6 +317,7 @@ Suite* roman_suite(void)
     tcase_add_test(c, allow_X_as_an_input);
     tcase_add_test(c, add_to_L);
     tcase_add_test(c, add_to_XL);
+    tcase_add_test(c, allow_L_as_input);
     suite_add_tcase(s, c);
     
     c = tcase_create("errors");

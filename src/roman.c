@@ -43,7 +43,7 @@ static const char* expander(const char* num)
 
 static char* merge(const char* num1, const char* num2)
 {
-    const char ordered[] = { 'X', 'V', 'I' };
+    const char ordered[] = { 'L', 'X', 'V', 'I' };
     size_t len1, len2;
     size_t i;
     char* retval;
