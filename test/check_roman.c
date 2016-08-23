@@ -419,6 +419,17 @@ START_TEST(subtract_IX_from_X)
 }
 END_TEST
 
+START_TEST(subtract_XL_from_L)
+{
+    const char* result = roman_subtract("L","XL");
+    
+    ck_assert_ptr_ne(0, result);
+    ck_assert_str_eq("X", result);
+    
+    free((void*)result);
+}
+END_TEST
+
 
 /* CASE: handle errors */
 START_TEST(null_inputs_should_return_null)
@@ -515,6 +526,7 @@ Suite* roman_suite(void)
     tcase_add_test(c, subtract_I_from_II);
     tcase_add_test(c, subtract_IV_from_V);
     tcase_add_test(c, subtract_IX_from_X);
+    tcase_add_test(c, subtract_XL_from_L);
     suite_add_tcase(s, c);
     
     c = tcase_create("limits");

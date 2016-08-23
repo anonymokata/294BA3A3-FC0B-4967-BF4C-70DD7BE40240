@@ -140,6 +140,15 @@ static char* cancel(const char* num1, const char* num2)
                 *ptr1++ = 'I';
                 psub--;
             }
+            else if ((*ptr1 == 'X') && (*psub == 'I'))
+            {
+                *ptr1++ = 'V';
+                *ptr1++ = 'I';
+                *ptr1++ = 'I';
+                *ptr1++ = 'I';
+                *ptr1++ = 'I';
+                psub--;
+            }
             else
                 *ptr2++ = *ptr1;
         }
