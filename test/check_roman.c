@@ -398,7 +398,6 @@ START_TEST(subtract_I_from_II)
 END_TEST
 
 
-
 /* CASE: handle errors */
 START_TEST(null_inputs_should_return_null)
 {
@@ -411,6 +410,15 @@ START_TEST(null_inputs_should_return_null)
     ck_assert_ptr_eq(0, result);
     
     result = roman_add(0,0);
+    ck_assert_ptr_eq(0, result);
+    
+    result = roman_subtract(0,"I");
+    ck_assert_ptr_eq(0, result);
+    
+    result = roman_subtract("I", 0);
+    ck_assert_ptr_eq(0, result);
+    
+    result = roman_subtract(0,0);
     ck_assert_ptr_eq(0, result);
 }
 END_TEST
@@ -426,6 +434,15 @@ START_TEST(empty_inputs_should_return_null)
     ck_assert_ptr_eq(0, result);
     
     result = roman_add("", "");
+    ck_assert_ptr_eq(0, result);
+    
+    result = roman_subtract("", "I");
+    ck_assert_ptr_eq(0, result);
+    
+    result = roman_subtract("I", "");
+    ck_assert_ptr_eq(0, result);
+    
+    result = roman_subtract("", "");
     ck_assert_ptr_eq(0, result);
 }
 END_TEST
