@@ -8,7 +8,7 @@ static const char letters[] = { 'M', 'D', 'C', 'L', 'X', 'V', 'I' };
 static const char* simplify_adders_wide[]  = { "IIIII", "VV", "XXXXX", "LL", "CCCCC", "DD" };
 static const char* simplify_adders_short[] = { "V",     "X",  "L",     "C",  "D",     "M"  };
 
-static const char* simplify_nicety_wide[]  = { "IIII", "VIIII", "VIV", "XXXX", "LXXXX", "LXL", "CCCC", "DCCCC", "MCM" };
+static const char* simplify_nicety_wide[]  = { "IIII", "VIIII", "VIV", "XXXX", "LXXXX", "LXL", "CCCC", "DCCCC", "DCD" };
 static const char* simplify_nicety_short[] = { "IV",   "IX",    "IX",  "XL",   "XC",    "XC",  "CD",   "CM",    "CM"  };
 
 static int match_len(const char* find, const char* num)
