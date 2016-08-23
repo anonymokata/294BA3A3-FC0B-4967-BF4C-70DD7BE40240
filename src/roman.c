@@ -76,11 +76,21 @@ static int args_valid(const char* num1, const char* num2)
 
 static char* expander(const char* num)
 {
+    char* retval;
+    
     //worst case expansion is 5/2
     char* src = malloc( strlen(num) * 3 );
     char* dst = malloc( strlen(num) * 3 );
     strcpy(src, num);
-    return replacer(dst, src, simplify_nicety_short, simplify_nicety_wide, (int)DIMENSION_OF(simplify_nicety_wide));
+    
+    //clean up temporary storage
+    retval = replacer(dst, src, simplify_nicety_short, simplify_nicety_wide, (int)DIMENSION_OF(simplify_nicety_wide));
+    if (retval != src)
+        free(src);
+    if (retval != dst)
+        free(dst);
+    
+    return retval;
 }
 
 static char* merge(const char* num1, const char* num2)
