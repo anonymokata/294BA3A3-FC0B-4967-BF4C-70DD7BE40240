@@ -4,7 +4,7 @@
 #include <check.h>
 #include "roman.h"
 
-/* CASE: simple-addition */
+/* CASE: addition */
 START_TEST(add_I_plus_I)
 {
     const char* result = roman_add("I","I");
@@ -385,6 +385,20 @@ START_TEST(add_some_long_numbers)
 END_TEST
 
 
+/* CASE: subtraction */
+START_TEST(subtract_I_from_II)
+{
+    const char* result = roman_subtract("II","I");
+    
+    ck_assert_ptr_ne(0, result);
+    ck_assert_str_eq("I", result);
+    
+    free((void*)result);
+}
+END_TEST
+
+
+
 /* CASE: handle errors */
 START_TEST(null_inputs_should_return_null)
 {
@@ -424,7 +438,7 @@ START_TEST(really_big_numbers)
     result = roman_add("MMMMMMMMMM","MMMMMCCCXXI");
     ck_assert_ptr_ne(0, result);
     ck_assert_str_eq("MMMMMMMMMMMMMMMCCCXXI", result);
-    free(result);
+    free((char*)result);
 }
 END_TEST
 
@@ -456,6 +470,10 @@ Suite* roman_suite(void)
     tcase_add_test(c, add_with_D_and_to_D);
     tcase_add_test(c, add_with_M_and_to_M);
     tcase_add_test(c, add_some_long_numbers);
+    suite_add_tcase(s, c);
+    
+    c = tcase_create("subraction");
+    tcase_add_test(c, subtract_I_from_II);
     suite_add_tcase(s, c);
     
     c = tcase_create("limits");

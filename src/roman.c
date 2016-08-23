@@ -148,3 +148,10 @@ const char* roman_add(const char* num1, const char* num2)
     
     return retval;
 }
+
+const char* roman_subtract(const char* minuend, const char* subtrahend)
+{
+    (void*)subtrahend;
+    return minuend;
+}
+
