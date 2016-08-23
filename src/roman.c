@@ -5,11 +5,10 @@
 
 static const char letters[] = { 'M', 'D', 'C', 'L', 'X', 'V', 'I' };
 
-static const char* simplify_adders_wide[]  = { "IIIII", "VV", "XXXXX", "LL", "CCCCC", "DD" };
-static const char* simplify_adders_short[] = { "V",     "X",  "L",     "C",  "D",     "M"  };
-
-static const char* simplify_nicety_wide[]  = { "IIII", "VIIII", "VIV", "XXXX", "LXXXX", "LXL", "CCCC", "DCCCC", "DCD" };
-static const char* simplify_nicety_short[] = { "IV",   "IX",    "IX",  "XL",   "XC",    "XC",  "CD",   "CM",    "CM"  };
+static const char* simplify_adders_wide[]  = { "IIIII", "VV",     "XXXXX", "LL",    "CCCCC", "DD"                            };
+static const char* simplify_adders_short[] = { "V",     "X",      "L",     "C",     "D",     "M"                             };
+static const char* simplify_nicety_wide[]  = { "IIII",  "VIIII",  "XXXX",  "LXXXX", "CCCC",  "DCCCC",  "VIV",  "LXL",  "DCD" };
+static const char* simplify_nicety_short[] = { "IV",    "IX",     "XL",    "XC",    "CD",    "CM",     "IX",   "XC",   "CM"  };
 
 static int match_len(const char* find, const char* num)
 {
@@ -147,6 +146,14 @@ static char* cancel(const char* num1, const char* num2)
                 *ptr1++ = 'I';
                 *ptr1++ = 'I';
                 *ptr1++ = 'I';
+                psub--;
+            }
+            else if ((*ptr1 == 'L') && (*psub == 'X'))
+            {
+                *ptr1++ = 'X';
+                *ptr1++ = 'X';
+                *ptr1++ = 'X';
+                *ptr1++ = 'X';
                 psub--;
             }
             else
