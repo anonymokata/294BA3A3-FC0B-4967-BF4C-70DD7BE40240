@@ -363,6 +363,27 @@ START_TEST(add_with_M_and_to_M)
 }
 END_TEST
 
+START_TEST(add_some_long_numbers)
+{
+    const char* result;
+    
+    result = roman_add("MCMXCIII","IV");
+    ck_assert_ptr_ne(0, result);
+    ck_assert_str_eq("MCMXCVII", result);
+    free((void*)result);
+    
+    result = roman_add("MCMLXX","XLVI"); //Because even romans like unix time?
+    ck_assert_ptr_ne(0, result);
+    ck_assert_str_eq("MMXVI", result);
+    free((void*)result);
+    
+    result = roman_add("CMXCIV","VI");
+    ck_assert_ptr_ne(0, result);
+    ck_assert_str_eq("M", result);
+    free((void*)result);
+}
+END_TEST
+
 
 /* CASE: handle errors */
 START_TEST(null_inputs_should_return_null)
@@ -422,6 +443,7 @@ Suite* roman_suite(void)
     tcase_add_test(c, add_compacted_numbers);
     tcase_add_test(c, add_with_D_and_to_D);
     tcase_add_test(c, add_with_M_and_to_M);
+    tcase_add_test(c, add_some_long_numbers);
     suite_add_tcase(s, c);
     
     c = tcase_create("errors");
