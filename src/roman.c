@@ -152,11 +152,15 @@ const char* roman_add(const char* num1, const char* num2)
 const char* roman_subtract(const char* minuend, const char* subtrahend)
 {
     char* ptr1 = (char*)minuend;
-    char* ptr2 = (char*)malloc(strlen(minuend)*2);
+    char* ptr2;
     char* psub = (char*)subtrahend;
-    char* retval = ptr2;
+    char* retval;
     
-    memset(ptr2,0,2);
+    if (!args_valid(minuend, subtrahend))
+        return 0;
+    
+    retval = ptr2 = (char*)malloc(strlen(minuend) * 2);
+    
     while (*ptr1)
     {
         if (*ptr1 != *psub)
