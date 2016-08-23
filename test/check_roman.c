@@ -88,7 +88,6 @@ END_TEST
 START_TEST(IV_input_means_IIII)
 {
     const char* result;
-    
     result = roman_add("IV","I");
     ck_assert_ptr_ne(0, result);
     ck_assert_str_eq("V", result);

@@ -3,28 +3,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-typedef struct _SIMPLIFICATION_T 
-{
-    const char* wide;
-    const char* narrow;
-} SIMPLIFICATION_T;
+static const char letters[] = { 'C', 'L', 'X', 'V', 'I' };
 
-static const char letters[] = { 'L', 'X', 'V', 'I' };
+static const char* simplify_adders_wide[]  = { "IIIII", "VV", "XXXXX", "LL" };
+static const char* simplify_adders_short[] = { "V",     "X",  "L",     "C"  };
 
-static const SIMPLIFICATION_T simplifications_adders[] =
-{
-    { "IIIII", "V" },
-    { "VV",    "X" },
-    { "XXXXX", "L" },
-    { "LL",    "C" },
-};
-
-static const SIMPLIFICATION_T simplifications_nicety[] =
-{
-    { "IIII", "IV" },
-    { "VIV",  "IX" },
-    { "XXXX", "XL" },
-};
+static const char* simplify_nicety_wide[]  = { "IIII", "VIIII", "VIV", "XXXX", "LXXXX", "LXL" };
+static const char* simplify_nicety_short[] = { "IV",   "IX",    "IX",  "XL",   "XC",    "XC"  };
 
 static int match_len(const char* find, const char* num)
 {
@@ -36,6 +21,44 @@ static int match_len(const char* find, const char* num)
         len++;
     }
     return len;
+}
+
+static char* replacer(char* dst, char* src, const char** orig, const char** repl, const int num)
+{
+    char* ptr1 = src;
+    char* ptr2 = dst;
+    char* last = 0;
+    int i;
+
+    while (*ptr1 != 0)
+    {
+        for (i=0; (i < num && (last != ptr1)); i++)
+        {
+            int len = match_len(orig[i], ptr1);
+            if (len > 0)
+            {
+                const char* ptr3 = repl[i];
+                while (*ptr3)
+                {
+                    *ptr2++ = *ptr3++;
+                }
+                ptr1 += (len - 1);
+                last = ptr1;
+                break;
+            }
+        }
+        if (last != ptr1)
+        {
+            *ptr2++ = *ptr1;
+        }
+        ptr1++;
+    }
+    *ptr2 = 0;
+    
+    if (last != 0)
+        dst = replacer(src, dst, orig, repl, num);
+    
+    return dst;
 }
 
 static int args_valid(const char* num1, const char* num2)
@@ -51,17 +74,13 @@ static int args_valid(const char* num1, const char* num2)
     return 1;
 }
 
-static const char* expander(const char* num)
+static char* expander(const char* num)
 {
-    if (strcmp(num, "IV") == 0)
-        num = "IIII";
-    if (strcmp(num, "IX") == 0)
-        num = "VIIII";
-    if (strcmp(num, "XL") == 0)
-        num = "XXXX";
-    if (strcmp(num, "LXL") == 0)
-        num = "LXXXX";
-    return num;
+    //worst case expansion is 5/2
+    char* src = malloc( strlen(num) * 3 );
+    char* dst = malloc( strlen(num) * 3 );
+    strcpy(src, num);
+    return replacer(dst, src, simplify_nicety_short, simplify_nicety_wide, (int)DIMENSION_OF(simplify_nicety_wide));
 }
 
 static char* merge(const char* num1, const char* num2)
@@ -89,65 +108,33 @@ static char* merge(const char* num1, const char* num2)
     return retval;
 }
 
-static char* simplify(char* retval, const SIMPLIFICATION_T* simplifications, const int num_simplifications)
-{
-    char* ptr1 = retval;
-    char* ptr2 = retval;
-    char* last = 0;
-    int i;
-    
-    while (*ptr1 != 0)
-    {
-        for (i=0; (i < num_simplifications && (last != ptr1)); i++)
-        {
-            int len = match_len(simplifications[i].wide, ptr1);
-            if (len > 0)
-            {
-                const char* narrow = simplifications[i].narrow;
-                while (*narrow)
-                {
-                    *ptr2++ = *narrow++;
-                }
-                ptr1 += (len - 1);
-                last = ptr1;
-                break;
-            }
-        }
-        if (last != ptr1)
-        {
-            *ptr2++ = *ptr1;
-        }
-        ptr1++;
-    }
-    *ptr2 = 0;
-    
-    if (last != 0)
-        retval = simplify(retval, simplifications, num_simplifications);
-    
-    return retval;
-}
-
 static char* compactor(char* retval)
 {
-    retval = simplify(retval, simplifications_adders, (int)DIMENSION_OF(simplifications_adders));
-    retval = simplify(retval, simplifications_nicety, (int)DIMENSION_OF(simplifications_nicety));
+    retval = replacer(retval, retval, simplify_adders_wide, simplify_adders_short, (int)DIMENSION_OF(simplify_adders_wide));
+    retval = replacer(retval, retval, simplify_nicety_wide, simplify_nicety_short, (int)DIMENSION_OF(simplify_nicety_wide));
     return retval;
 }
 
 const char* roman_add(const char* num1, const char* num2)
 {
     char* retval;
+    char* tmp1;
+    char* tmp2;
     
     if (!args_valid(num1, num2))
         return 0;
     
     //expand if needed
-    num1 = expander(num1);
-    num2 = expander(num2);
+    tmp1 = expander(num1);
+    tmp2 = expander(num2);
     
     //merge numbers to add
-    retval = merge(num1, num2);
+    retval = merge(tmp1, tmp2);
     retval = compactor(retval);
+    
+    //throw out temp space
+    free(tmp1);
+    free(tmp2);
     
     return retval;
 }
