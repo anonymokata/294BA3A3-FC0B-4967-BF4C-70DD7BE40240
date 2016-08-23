@@ -3,13 +3,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-static const char letters[] = { 'C', 'L', 'X', 'V', 'I' };
+static const char letters[] = { 'D', 'C', 'L', 'X', 'V', 'I' };
 
-static const char* simplify_adders_wide[]  = { "IIIII", "VV", "XXXXX", "LL" };
-static const char* simplify_adders_short[] = { "V",     "X",  "L",     "C"  };
+static const char* simplify_adders_wide[]  = { "IIIII", "VV", "XXXXX", "LL", "CCCCC" };
+static const char* simplify_adders_short[] = { "V",     "X",  "L",     "C",  "D"     };
 
-static const char* simplify_nicety_wide[]  = { "IIII", "VIIII", "VIV", "XXXX", "LXXXX", "LXL" };
-static const char* simplify_nicety_short[] = { "IV",   "IX",    "IX",  "XL",   "XC",    "XC"  };
+static const char* simplify_nicety_wide[]  = { "IIII", "VIIII", "VIV", "XXXX", "LXXXX", "LXL", "CCCC" };
+static const char* simplify_nicety_short[] = { "IV",   "IX",    "IX",  "XL",   "XC",    "XC",  "CD"   };
 
 static int match_len(const char* find, const char* num)
 {
