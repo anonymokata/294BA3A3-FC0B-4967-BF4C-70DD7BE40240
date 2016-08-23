@@ -118,6 +118,31 @@ static char* merge(const char* num1, const char* num2)
     return retval;
 }
 
+static char* cancel(const char* num1, const char* num2)
+{
+    char* retval = (char*)malloc(strlen(num1) * 2);
+    
+    char* ptr1 = (char*)num1;
+    char* ptr2 = (char*)retval;
+    char* psub = (char*)num2;
+    
+    while (*ptr1)
+    {
+        if (*ptr1 != *psub)
+        {
+            *ptr2++ = *ptr1;
+        }
+        else
+        {
+            psub++;
+        }
+        ptr1++;
+    } 
+    *ptr2 = 0;
+    
+    return retval;
+}
+
 static char* compactor(char* retval)
 {
     retval = replacer(retval, retval, simplify_adders_wide, simplify_adders_short, (int)DIMENSION_OF(simplify_adders_wide));
@@ -151,29 +176,12 @@ const char* roman_add(const char* num1, const char* num2)
 
 const char* roman_subtract(const char* minuend, const char* subtrahend)
 {
-    char* ptr1 = (char*)minuend;
-    char* ptr2;
-    char* psub = (char*)subtrahend;
     char* retval;
     
     if (!args_valid(minuend, subtrahend))
         return 0;
     
-    retval = ptr2 = (char*)malloc(strlen(minuend) * 2);
-    
-    while (*ptr1)
-    {
-        if (*ptr1 != *psub)
-        {
-            *ptr2++ = *ptr1;
-        }
-        else
-        {
-            psub++;
-        }
-        ptr1++;
-    } 
-    *ptr2 = 0;
+    retval = cancel(minuend, subtrahend);
     
     return retval;
 }
