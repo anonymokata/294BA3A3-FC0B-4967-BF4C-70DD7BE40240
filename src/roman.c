@@ -119,44 +119,32 @@ static char* merge(const char* num1, const char* num2)
 
 static char* cancel(const char* num1, const char* num2)
 {
+    size_t index;
     int len1 = strlen(num1);
     int len2 = strlen(num2);
     char* retval = (char*)malloc(len1 * 2);
     
     char* ptr2 = (char*)retval;
-    char* ptr1 = (char*)(num1 + len1);
-    char* psub = (char*)(num2 + len2);
+    char* ptr1 = (char*)(num1 + len1 - 1);
+    char* psub = (char*)(num2 + len2 - 1);
     
     while (ptr1 >= num1)
     {
         if (*ptr1 != *psub)
         {
-            if ((*ptr1 == 'V') && (*psub == 'I'))
+            for (index = 0; index < DIMENSION_OF(simplify_adders_short); index++)
             {
-                *ptr1++ = 'I';
-                *ptr1++ = 'I';
-                *ptr1++ = 'I';
-                *ptr1++ = 'I';
-                psub--;
+                int possible_prefix = ((7 - index) & 0x06);
+                if ((*ptr1 == simplify_adders_short[index][0]) && (*psub == letters[possible_prefix]))
+                {
+                    const char* borrow = simplify_nicety_wide[index];
+                    while (*borrow)
+                        *ptr1++ = *borrow++;
+                    psub--;
+                    break;
+                }
             }
-            else if ((*ptr1 == 'X') && (*psub == 'I'))
-            {
-                *ptr1++ = 'V';
-                *ptr1++ = 'I';
-                *ptr1++ = 'I';
-                *ptr1++ = 'I';
-                *ptr1++ = 'I';
-                psub--;
-            }
-            else if ((*ptr1 == 'L') && (*psub == 'X'))
-            {
-                *ptr1++ = 'X';
-                *ptr1++ = 'X';
-                *ptr1++ = 'X';
-                *ptr1++ = 'X';
-                psub--;
-            }
-            else
+            if (index == DIMENSION_OF(simplify_adders_short))
                 *ptr2++ = *ptr1;
         }
         else
