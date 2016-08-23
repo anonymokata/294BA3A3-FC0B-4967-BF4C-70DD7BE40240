@@ -79,8 +79,8 @@ static char* expander(const char* num)
     char* retval;
     
     //worst case expansion is 5/2
-    char* src = malloc( strlen(num) * 3 );
-    char* dst = malloc( strlen(num) * 3 );
+    char* src = malloc( strlen(num) * 8 );
+    char* dst = malloc( strlen(num) * 8 );
     strcpy(src, num);
     
     //clean up temporary storage
@@ -120,23 +120,34 @@ static char* merge(const char* num1, const char* num2)
 
 static char* cancel(const char* num1, const char* num2)
 {
-    char* retval = (char*)malloc(strlen(num1) * 2);
+    int len1 = strlen(num1);
+    int len2 = strlen(num2);
+    char* retval = (char*)malloc(len1 * 2);
     
-    char* ptr1 = (char*)num1;
     char* ptr2 = (char*)retval;
-    char* psub = (char*)num2;
+    char* ptr1 = (char*)(num1 + len1);
+    char* psub = (char*)(num2 + len2);
     
-    while (*ptr1)
+    while (ptr1 >= num1)
     {
         if (*ptr1 != *psub)
         {
-            *ptr2++ = *ptr1;
+            if ((*ptr1 == 'V') && (*psub == 'I'))
+            {
+                *ptr1++ = 'I';
+                *ptr1++ = 'I';
+                *ptr1++ = 'I';
+                *ptr1++ = 'I';
+                psub--;
+            }
+            else
+                *ptr2++ = *ptr1;
         }
         else
         {
-            psub++;
+            psub--;
         }
-        ptr1++;
+        ptr1--;
     } 
     *ptr2 = 0;
     
@@ -177,11 +188,21 @@ const char* roman_add(const char* num1, const char* num2)
 const char* roman_subtract(const char* minuend, const char* subtrahend)
 {
     char* retval;
+    char* tmp1;
+    char* tmp2;
     
     if (!args_valid(minuend, subtrahend))
         return 0;
     
-    retval = cancel(minuend, subtrahend);
+    //expand if needed
+    tmp1 = expander(minuend);
+    tmp2 = expander(subtrahend);
+    
+    retval = cancel(tmp1, tmp2);
+    
+    //throw out temp space
+    free(tmp1);
+    free(tmp2);
     
     return retval;
 }
