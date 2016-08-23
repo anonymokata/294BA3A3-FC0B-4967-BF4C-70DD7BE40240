@@ -397,6 +397,17 @@ START_TEST(subtract_I_from_II)
 }
 END_TEST
 
+START_TEST(subtract_IV_from_V)
+{
+    const char* result = roman_subtract("V","IV");
+    
+    ck_assert_ptr_ne(0, result);
+    ck_assert_str_eq("I", result);
+    
+    free((void*)result);
+}
+END_TEST
+
 
 /* CASE: handle errors */
 START_TEST(null_inputs_should_return_null)
@@ -491,6 +502,7 @@ Suite* roman_suite(void)
     
     c = tcase_create("subraction");
     tcase_add_test(c, subtract_I_from_II);
+    tcase_add_test(c, subtract_IV_from_V);
     suite_add_tcase(s, c);
     
     c = tcase_create("limits");
