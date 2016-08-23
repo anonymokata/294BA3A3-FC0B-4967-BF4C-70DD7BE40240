@@ -416,6 +416,18 @@ START_TEST(empty_inputs_should_return_null)
 }
 END_TEST
 
+/* CASE: limits */
+START_TEST(really_big_numbers)
+{
+    const char* result;
+    
+    result = roman_add("MMMMMMMMMM","MMMMMCCCXXI");
+    ck_assert_ptr_ne(0, result);
+    ck_assert_str_eq("MMMMMMMMMMMMMMMCCCXXI", result);
+    free(result);
+}
+END_TEST
+
 /* Set up the tests, cases, and suite to be run for this unit */
 Suite* roman_suite(void)
 {
@@ -444,6 +456,10 @@ Suite* roman_suite(void)
     tcase_add_test(c, add_with_D_and_to_D);
     tcase_add_test(c, add_with_M_and_to_M);
     tcase_add_test(c, add_some_long_numbers);
+    suite_add_tcase(s, c);
+    
+    c = tcase_create("limits");
+    tcase_add_test(c, really_big_numbers);
     suite_add_tcase(s, c);
     
     c = tcase_create("errors");
