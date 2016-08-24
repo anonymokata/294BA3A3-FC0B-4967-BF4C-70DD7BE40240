@@ -145,7 +145,7 @@ static char* cancel(const char* num1, const char* num2)
     char* ptr1 = (char*)(num1 + len1 - 1);
     char* psub = (char*)(num2 + len2 - 1);
     
-    while (ptr1 >= num1)
+    while ((ptr1 >= num1) && (psub >= num2))
     {
         if (*ptr1 != *psub)
         {
@@ -182,16 +182,20 @@ static char* cancel(const char* num1, const char* num2)
             psub--;
         }
         ptr1--;
-    } 
+    }
+    while (ptr1 >= num1)
+        *ptr2++ = *ptr1--;
+    if (psub > num2)
+        ptr2 = scratch;
     *ptr2 = 0;
-    
+
     //reverse string before returning it
     len = strlen(scratch);
-    retval = (char*)malloc(len+ 1);
+    retval = (char*)malloc(len + 1);
     for (index = 0; index < len; index++)
         retval[index] = *(--ptr2);
     retval[len] = 0;
-    
+
     return retval;
 }
 
