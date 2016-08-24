@@ -10,6 +10,22 @@ static const char* simplify_adders_short[] = { "V",     "X",      "L",     "C", 
 static const char* simplify_nicety_wide[]  = { "IIII",  "VIIII",  "XXXX",  "LXXXX", "CCCC",  "DCCCC",  "VIV",  "LXL",  "DCD" };
 static const char* simplify_nicety_short[] = { "IV",    "IX",     "XL",    "XC",    "CD",    "CM",     "IX",   "XC",   "CM"  };
 
+//returns true if num1 > num2
+static int is_bigger(char num1, char num2)
+{
+    size_t i;
+    char mask = 0;
+    
+    for (i=0; i < DIMENSION_OF(letters); i++)
+    {
+        if (letters[i] == num2)
+            mask |= 2;
+        if (letters[i] == num1)
+            mask = 1;
+    }
+    return (mask == 0x03);
+}
+
 static int match_len(const char* find, const char* num)
 {
     int len = 0;
@@ -119,12 +135,13 @@ static char* merge(const char* num1, const char* num2)
 
 static char* cancel(const char* num1, const char* num2)
 {
-    size_t index;
+    size_t index, len;
     int len1 = strlen(num1);
     int len2 = strlen(num2);
-    char* retval = (char*)malloc(len1 * 2);
+    char* scratch = (char*)malloc(len1 * 2);
+    char* retval;
     
-    char* ptr2 = (char*)retval;
+    char* ptr2 = (char*)scratch;
     char* ptr1 = (char*)(num1 + len1 - 1);
     char* psub = (char*)(num2 + len2 - 1);
     
@@ -132,20 +149,33 @@ static char* cancel(const char* num1, const char* num2)
     {
         if (*ptr1 != *psub)
         {
-            for (index = 0; index < DIMENSION_OF(simplify_adders_short); index++)
+            if (is_bigger(*ptr1, *psub))
             {
-                int possible_prefix = ((7 - index) & 0x06);
-                if ((*ptr1 == simplify_adders_short[index][0]) && (*psub == letters[possible_prefix]))
+                for (index = 0; index < DIMENSION_OF(simplify_adders_short); index++)
                 {
-                    const char* borrow = simplify_nicety_wide[index];
-                    while (*borrow)
-                        *ptr1++ = *borrow++;
-                    psub--;
-                    break;
+                    if (*ptr1 == simplify_adders_short[index][0])
+                    {
+                        const char* borrow = simplify_nicety_wide[index];
+                        while (*borrow)
+                            *ptr1++ = *borrow++;
+                        if (*ptr1 != *psub)
+                        {
+                            *ptr1 = *(ptr1-1);
+                            ptr1++;
+                        }
+                        else
+                        {
+                            psub--;
+                        }
+                        *ptr1 = 0;
+                        break;
+                    }
                 }
             }
-            if (index == DIMENSION_OF(simplify_adders_short))
+            else
+            {
                 *ptr2++ = *ptr1;
+            }
         }
         else
         {
@@ -154,6 +184,13 @@ static char* cancel(const char* num1, const char* num2)
         ptr1--;
     } 
     *ptr2 = 0;
+    
+    //reverse string before returning it
+    len = strlen(scratch);
+    retval = (char*)malloc(len+ 1);
+    for (index = 0; index < len; index++)
+        retval[index] = *(--ptr2);
+    retval[len] = 0;
     
     return retval;
 }
@@ -201,8 +238,8 @@ const char* roman_subtract(const char* minuend, const char* subtrahend)
     //expand if needed
     tmp1 = expander(minuend);
     tmp2 = expander(subtrahend);
-    
     retval = cancel(tmp1, tmp2);
+    retval = compactor(retval);
     
     //throw out temp space
     free(tmp1);
