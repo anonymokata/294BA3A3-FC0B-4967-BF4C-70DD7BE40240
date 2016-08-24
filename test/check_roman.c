@@ -531,6 +531,18 @@ START_TEST(romans_never_heard_if_zero)
 }
 END_TEST
 
+START_TEST(romans_never_heard_of_negative)
+{
+    const char* result;
+    
+    result = roman_subtract("I", "II");
+    ck_assert_ptr_eq(0, result);
+    
+    result = roman_subtract("IV", "MCMX");
+    ck_assert_ptr_eq(0, result);
+}
+END_TEST
+
 /* CASE: limits */
 START_TEST(really_big_numbers)
 {
@@ -600,6 +612,7 @@ Suite* roman_suite(void)
     tcase_add_test(c, null_inputs_should_return_null);
     tcase_add_test(c, empty_inputs_should_return_null);
     tcase_add_test(c, romans_never_heard_if_zero);
+    tcase_add_test(c, romans_never_heard_of_negative);
     suite_add_tcase(s, c);
     
     return s;
