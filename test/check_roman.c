@@ -531,6 +531,16 @@ START_TEST(really_big_numbers)
     ck_assert_ptr_ne(0, result);
     ck_assert_str_eq("MMMMMMMMMMMMMMMCCCXXI", result);
     free((char*)result);
+    
+    result = roman_subtract("MMMMMMMMMMMMMMMCCCXXI","MMMMMMMMMM");
+    ck_assert_ptr_ne(0, result);
+    ck_assert_str_eq("MMMMMCCCXXI", result);
+    free((char*)result);
+    
+    result = roman_subtract("MMMMMMMMMMMMMMMCCCXXI","MMMMMCCCXXI");
+    ck_assert_ptr_ne(0, result);
+    ck_assert_str_eq("MMMMMMMMMM", result);
+    free((char*)result);
 }
 END_TEST
 
