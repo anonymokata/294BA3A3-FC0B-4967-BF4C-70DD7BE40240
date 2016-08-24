@@ -451,6 +451,27 @@ START_TEST(subtract_other_compacted_forms)
 }
 END_TEST
 
+START_TEST(subtract_large_numbers)
+{
+    const char* result;
+        
+    result = roman_subtract("MMXVI","MCMLXX");
+    ck_assert_ptr_ne(0, result);
+    ck_assert_str_eq("XLVI", result);
+    free((void*)result);
+        
+    result = roman_subtract("MCMXCIII","MCMXCI");
+    ck_assert_ptr_ne(0, result);
+    ck_assert_str_eq("II", result);
+    free((void*)result);
+        
+    result = roman_subtract("MCMXVI","CXXVIII");
+    ck_assert_ptr_ne(0, result);
+    ck_assert_str_eq("MDCCLXXXVIII", result);
+    free((void*)result);
+}
+END_TEST
+
 
 /* CASE: handle errors */
 START_TEST(null_inputs_should_return_null)
@@ -549,6 +570,7 @@ Suite* roman_suite(void)
     tcase_add_test(c, subtract_IX_from_X);
     tcase_add_test(c, subtract_XL_from_L);
     tcase_add_test(c, subtract_other_compacted_forms);
+    tcase_add_test(c, subtract_large_numbers);
     suite_add_tcase(s, c);
     
     c = tcase_create("limits");
