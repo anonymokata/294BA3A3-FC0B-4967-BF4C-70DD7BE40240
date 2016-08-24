@@ -522,6 +522,15 @@ START_TEST(empty_inputs_should_return_null)
 }
 END_TEST
 
+START_TEST(romans_never_heard_if_zero)
+{
+    const char* result;
+    
+    result = roman_subtract("XVI", "XVI");
+    ck_assert_ptr_eq(0, result);
+}
+END_TEST
+
 /* CASE: limits */
 START_TEST(really_big_numbers)
 {
@@ -590,6 +599,7 @@ Suite* roman_suite(void)
     c = tcase_create("errors");
     tcase_add_test(c, null_inputs_should_return_null);
     tcase_add_test(c, empty_inputs_should_return_null);
+    tcase_add_test(c, romans_never_heard_if_zero);
     suite_add_tcase(s, c);
     
     return s;
