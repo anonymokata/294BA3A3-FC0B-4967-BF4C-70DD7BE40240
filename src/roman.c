@@ -245,6 +245,9 @@ const char* roman_subtract(const char* minuend, const char* subtrahend)
     free(tmp1);
     free(tmp2);
     
-    return retval;
+    if (*retval == 0)
+        return 0;
+    else
+        return retval;
 }
 
